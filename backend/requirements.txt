@@ -1,0 +1,12 @@
+fastapi>=0.115
+uvicorn[standard]>=0.30
+numpy>=2.0
+pillow>=11.1
+python-multipart>=0.0.9
+httpx2
+pymupdf>=1.26  # PDF render test + page previews (optional; checks degrade to n/a without it)
+networkx>=3.3  # Cross-Artifact Intelligence graph (components, centrality)
+# Optional, auto-detected when importable: scikit-learn (cosine similarity), yara-python (rules).
+# Do NOT install python-magic on Windows without a working libmagic DLL: importing it can crash the interpreter.
+pytest>=8  # test runner (unittest-style tests are pytest-compatible)
+watchdog>=4  # Recovery Shield: real filesystem-event monitoring (falls back to a 5s poll if unavailable)

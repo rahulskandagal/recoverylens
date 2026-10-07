@@ -1,0 +1,1 @@
+{"clusters":4,"unit":512,"size":1739,"cls":[4,4,4,4],"owner":[0,0,0,0],"damaged":[0,1,1,0],"legend":{"zero":0,"high_entropy":1,"text":2,"log_text":3,"pdf_text":4,"jpeg_header":5,"jpeg_data":6,"sqlite_page":7,"zip_struct":8,"xml_text":9,"fat_dir":10,"binary":11},"files":["R001"],"file_names":{"R001":"corrupted_demo_report__rec0000.pdf"}}

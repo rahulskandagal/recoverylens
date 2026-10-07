@@ -1,0 +1,54 @@
+{
+ "weights": {
+  "type_compat": -0.002797618430506595,
+  "struct_order": 0.40352766448433797,
+  "index_verified": 0.4919539403113012,
+  "boundary_smooth": 0.5547473690487564,
+  "entropy_sim": 0.05252084044825006,
+  "hist_sim": -0.1304338482443348,
+  "proximity": -0.30412100888977195,
+  "content_sim": -0.7818233272177741,
+  "time_consistent": 0.3979552061698297
+ },
+ "bias": -2.069531428292731,
+ "mean": {
+  "type_compat": 0.9985538684020245,
+  "struct_order": 0.6048877953764262,
+  "index_verified": 0.016449746926970356,
+  "boundary_smooth": 0.510186640593529,
+  "entropy_sim": 0.9908118084000512,
+  "hist_sim": 0.976438723495185,
+  "proximity": 0.36217974592730967,
+  "content_sim": 0.9058428554426704,
+  "time_consistent": 0.4933193111836247
+ },
+ "std": {
+  "type_compat": 0.038000530277574975,
+  "struct_order": 0.12022427954926362,
+  "index_verified": 0.12719729852872902,
+  "boundary_smooth": 0.1198700036063957,
+  "entropy_sim": 0.05102684141935268,
+  "hist_sim": 0.12141469029468512,
+  "proximity": 0.25239191317161797,
+  "content_sim": 0.11229724100113651,
+  "time_consistent": 0.0730389912429836
+ },
+ "trained": true,
+ "training": {
+  "train_images": 14,
+  "test_images": 5,
+  "train_samples": 5532,
+  "test_samples": 2105,
+  "train_positive_rate": 0.05,
+  "test_positive_rate": 0.043,
+  "test_auc": 0.9994,
+  "train_auc": 0.9793,
+  "test_accuracy": 0.99,
+  "test_precision": 0.8125,
+  "test_recall": 1.0,
+  "prior_test_auc": 0.9335,
+  "prior_test_accuracy": 0.0627,
+  "data": "Synthetic fragmented images (seeds 1000+ train, 5000+ test), disjoint from demo datasets",
+  "trained_at": "2026-09-25T15:04:04"
+ }
+}

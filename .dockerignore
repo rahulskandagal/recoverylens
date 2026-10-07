@@ -1,0 +1,10 @@
+backend/.venv
+backend/data
+!backend/data/model
+backend/__pycache__
+backend/**/__pycache__
+frontend/node_modules
+frontend/dist
+test_images
+.git
+*.pyc

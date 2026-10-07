@@ -1,0 +1,23 @@
+backend/.venv/
+backend/data/*
+!backend/data/model/
+__pycache__/
+*.pyc
+frontend/node_modules/
+frontend/dist/
+test_images/
+
+
+# added for publishing
+.env
+.env.local
+.env.*.local
+node_modules/
+.next/
+.pgdata/
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.log
+.claude/settings.local.json

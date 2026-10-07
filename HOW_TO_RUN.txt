@@ -1,0 +1,35 @@
+RecoveryLens - how to run it on a Windows laptop
+================================================
+
+OPTION A - no install (easiest, needs internet)
+  Open: https://recoverylens-production.up.railway.app
+  All Demo Mode scenarios work. Real Recovery Mode (Recycle Bin scan) is disabled there,
+  because it can only read the drives of the computer it runs on.
+
+OPTION B - run it locally (needed to show Real Recovery Mode)
+  1. Install Python 3.12+  -> https://www.python.org/downloads/
+       IMPORTANT: tick "Add python.exe to PATH" on the first installer screen.
+  2. Install Node.js (LTS) -> https://nodejs.org/
+  3. Unzip this folder somewhere simple, e.g. C:\RecoveryLens  (avoid OneDrive folders).
+  4. Double-click setup.cmd       (one time, 2-5 minutes, needs internet)
+  5. Double-click start-dev.cmd   (every time; two black windows open - keep them open)
+  6. The browser opens http://localhost:5173/new automatically.
+
+Stopping: close the two black windows.
+
+Pre-loaded case
+  setup.cmd also loads the already-analysed Recycle Bin recovery of truncated_project_plan.pdf.
+  Open it at: http://localhost:5173/cases/20260927-222522-deb8
+  (or Cases in the top bar -> "Recycle Bin: truncated_project_plan.pdf")
+
+Demo script for the presentation
+  - Click "Guided demo" in the top bar: a 12-step walkthrough with what to show and say.
+  - Or New analysis -> "Damaged USB drive (realistic, 18 MB)" -> explore Recovered files,
+    Digital Twin, Relationship graph, Security Guardian, Reports (forensic PDF).
+  - Real Recovery Mode (local only): delete a file to the Recycle Bin, then
+    New analysis -> Recycle Bin evidence -> Scan Recycle Bin -> Recover & analyse.
+
+Troubleshooting
+  - "python is not recognized": reinstall Python with "Add to PATH" ticked, reopen setup.cmd.
+  - Page says it cannot connect: wait 10 seconds and refresh; the API window may still be starting.
+  - Port already in use: close any old RecoveryLens windows and run start-dev.cmd again.
