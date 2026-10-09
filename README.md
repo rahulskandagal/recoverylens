@@ -1,4 +1,6 @@
-# RecoveryLens: AI-assisted recovery intelligence
+﻿# RecoveryLens: AI-assisted recovery intelligence
+
+**Live demo**: https://recoverylens-production.up.railway.app
 
 > **Recover what exists. Infer relationships carefully. Never invent evidence.**
 
@@ -11,8 +13,8 @@ It is **not** an undelete tool. It never fabricates bytes. Missing data is repor
 zero-filled in exports, and listed with its exact byte ranges.
 
 ```
-Traditional:  Find → Recover
-RecoveryLens: Find → Understand → Relate → Reconstruct → Validate → Measure → Classify → Prioritize → Explain
+Traditional:  Find â†’ Recover
+RecoveryLens: Find â†’ Understand â†’ Relate â†’ Reconstruct â†’ Validate â†’ Measure â†’ Classify â†’ Prioritize â†’ Explain
 ```
 
 ---
@@ -44,14 +46,14 @@ A multi-stage `Dockerfile` at the repo root (Node builds the frontend, Python se
 same single-process pattern as local dev) is deployed to Railway for a shareable public link.
 
 **Real Recovery Mode and Recovery Shield only make sense on the machine whose drives/folders they
-read** — a public server would only ever see its own filesystem, never a visitor's. The image sets
+read** â€” a public server would only ever see its own filesystem, never a visitor's. The image sets
 `RECOVERYLENS_PUBLIC_DEMO=true`, which `app/main.py` uses to:
 * not register the Real Recovery (`/api/real/*`) or Recovery Shield (`/api/shield/*`) routers at all
 * return 403 from `/api/cases/upload` (free-form storage-image upload) and the restore-to-folder
   endpoint, since both write to the server's own local filesystem
 * expose this via `GET /api/config` (`{"public_demo": true}`), which the frontend reads to hide the
   Real Recovery Mode section on New Analysis, the Restore-to-folder button, and the Recovery Shield
-  nav link/badge — a public visitor only ever sees Demo Mode and read-only analysis pages, exactly
+  nav link/badge â€” a public visitor only ever sees Demo Mode and read-only analysis pages, exactly
   what still works.
 
 Every Demo Mode scenario, Benchmark Lab, Calibration and all read-only analysis pages (Fragments,
@@ -60,8 +62,8 @@ work identically to local dev. Covered by `tests/test_public_demo.py` (6 tests):
 the flag correctly, upload/restore are blocked, the real-recovery and shield routes genuinely don't
 exist, and a full demo case still runs end-to-end.
 
-Redeploy after code changes with `railway up -y --ci` from the repo root (needs a git repository —
-`railway up` only honours `.gitignore` inside one — and the Railway CLI logged in). Case data lives
+Redeploy after code changes with `railway up -y --ci` from the repo root (needs a git repository â€”
+`railway up` only honours `.gitignore` inside one â€” and the Railway CLI logged in). Case data lives
 in the container's own ephemeral filesystem and is not persisted across redeploys; that is
 intentional for a public demo (`pipeline.ensure_demo()` regenerates the Demo Mode datasets on every
 startup) and keeps a redeploy an easy way to reset a shared public instance.
@@ -74,13 +76,13 @@ Click **Guided demo** in the header or on the landing page. It opens the realist
 "Damaged USB drive" case (analysing it first if needed; about 20 s) and walks through 12 steps.
 Each step's floating panel says what to **show** and what to **say**:
 
-evidence → recovered files → proof (xref placement) → Digital Twin → possibility + simulator →
-structure → Safety Guardian → cross-artifact links → AI Investigator → Benchmark Lab →
-calibration → forensic PDF report.
+evidence â†’ recovered files â†’ proof (xref placement) â†’ Digital Twin â†’ possibility + simulator â†’
+structure â†’ Safety Guardian â†’ cross-artifact links â†’ AI Investigator â†’ Benchmark Lab â†’
+calibration â†’ forensic PDF report.
 
 Every claim in the narration was checked against the case's actual records.
 
-**Forensic PDF report**: Reports → *Forensic PDF report* (`GET /api/cases/{id}/report.pdf`). It covers
+**Forensic PDF report**: Reports â†’ *Forensic PDF report* (`GET /api/cases/{id}/report.pdf`). It covers
 evidence hashes, a byte-level reconstruction map per artifact, validator checks, security, possibility,
 cross-artifact links, investigator decisions and the audit log. It is rendered from the same records as
 the JSON report, and each generation is written to the audit trail with the PDF's SHA-256.
@@ -99,7 +101,7 @@ Gaps that need three or more separate pieces are reported as missing.
 
 ## Demo walkthrough (5 minutes)
 
-1. **New analysis → "Corrupted USB image (full scenario)"**. This is a 14 MB synthetic image
+1. **New analysis â†’ "Corrupted USB image (full scenario)"**. This is a 14 MB synthetic image
    holding 13 deleted files. The files are fragmented into up to 8 pieces, partially
    overwritten, bit-rotted and duplicated. Every demo screen carries a **SIMULATED EVIDENCE** banner.
 2. **Progress**: a live audit trail shows each stage: hash, scan, identify, relate,
@@ -115,7 +117,7 @@ Gaps that need three or more separate pieces are reported as missing.
      and why this priority.
    * *Further recovery: UNCERTAIN*. Headerless JPEG data exists on the medium, but it cannot be
      verified against the member's CRC.
-5. **Relationship graph**: fragments → files, directory-entry metadata nodes, content-similarity
+5. **Relationship graph**: fragments â†’ files, directory-entry metadata nodes, content-similarity
    and temporal links. Rejected alternative joins are shown in red with their scores. Click an
    edge to see its evidence and the model's per-feature contributions.
 6. **server_rack.jpg** and the `unknown_fragment_*.bin` orphans: honest **UNRECOVERABLE**
@@ -134,11 +136,11 @@ Gaps that need three or more separate pieces are reported as missing.
 | Dataset | Placement precision | Link accuracy | Notes |
 |---|---|---|---|
 | USB scenario | **100%** | **100%** (26 links) | recall 87.8%; 0/6 flipped bytes detected (they fell in data without checksums) |
-| A: JPEG | 100% | 100% | last cluster overwritten → 94.7% of MCU rows; hatched in preview |
+| A: JPEG | 100% | 100% | last cluster overwritten â†’ 94.7% of MCU rows; hatched in preview |
 | B: PDF | 100% | 100% | overwritten fragment reported as a 4 KB missing range; 8/10 pages intact |
 | C: DOCX | 100% | 100% | every XML part CRC-verified; embedded image 64% missing |
 | D: SQLite | 100% | 100% | pages numbered via b-tree key ranges; 2/2 corrupted pages detected |
-| E: Unrecoverable | n/a | n/a | header plus 88% overwritten → UNRECOVERABLE, ~8% bytes present |
+| E: Unrecoverable | n/a | n/a | header plus 88% overwritten â†’ UNRECOVERABLE, ~8% bytes present |
 
 Reproduce with `python -m scripts.evaluate_datasets` (in `backend/`).
 
@@ -148,30 +150,30 @@ Reproduce with `python -m scripts.evaluate_datasets` (in `backend/`).
 
 ```
             STORAGE IMAGE  (copied to write-protected store, SHA-256 before and after)
-                  │
-         DETERMINISTIC SCANNER  ── per 4 KiB cluster: entropy, signatures, JPEG marker legality,
-                  │                SQLite b-tree page headers, PDF objects, ZIP local headers,
-                  │                timestamps, FAT/VFAT directory entries, duplicate hashes
-         FRAGMENT EXTRACTION   ── runs of same-family clusters; split at headers, footers,
-                  │                RST-sequence breaks, PDF object-number restarts, time reversals
-     ┌────────────┴─────────────┐
+                  â”‚
+         DETERMINISTIC SCANNER  â”€â”€ per 4 KiB cluster: entropy, signatures, JPEG marker legality,
+                  â”‚                SQLite b-tree page headers, PDF objects, ZIP local headers,
+                  â”‚                timestamps, FAT/VFAT directory entries, duplicate hashes
+         FRAGMENT EXTRACTION   â”€â”€ runs of same-family clusters; split at headers, footers,
+                  â”‚                RST-sequence breaks, PDF object-number restarts, time reversals
+     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
  FILE STRUCTURE             METADATA ENGINE
  (xref, central dir,        (FAT LFN names, sizes, times,
   b-tree, restart markers)   EXIF, OOXML core, PDF /Info)
-     └────────────┬─────────────┘
-          RELATIONSHIP SCORING  ── logistic edge model over explainable features
-                  │                (deterministic checks enter as features)
-            RECONSTRUCTION      ── format assemblers: PDF · ZIP/DOCX · SQLite · JPEG · logs/text · orphans
-                  │
-      DETERMINISTIC VALIDATION  ── libjpeg (Pillow), zipfile + CRC-32, sqlite3 integrity_check,
-                  │                PDF object/xref walk, PNG chunk CRC, MP4 box walk
-        INTEGRITY · CONFIDENCE  ── four separate, itemised scores
-                  │
-      CLASSIFICATION · PRIORITY ── configurable, transparent
-                  │
-             EXPLANATION        ── templates over recorded evidence (no LLM)
-                  │
-         REPORT · AUDIT · PROVENANCE
+     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+          RELATIONSHIP SCORING  â”€â”€ logistic edge model over explainable features
+                  â”‚                (deterministic checks enter as features)
+            RECONSTRUCTION      â”€â”€ format assemblers: PDF Â· ZIP/DOCX Â· SQLite Â· JPEG Â· logs/text Â· orphans
+                  â”‚
+      DETERMINISTIC VALIDATION  â”€â”€ libjpeg (Pillow), zipfile + CRC-32, sqlite3 integrity_check,
+                  â”‚                PDF object/xref walk, PNG chunk CRC, MP4 box walk
+        INTEGRITY Â· CONFIDENCE  â”€â”€ four separate, itemised scores
+                  â”‚
+      CLASSIFICATION Â· PRIORITY â”€â”€ configurable, transparent
+                  â”‚
+             EXPLANATION        â”€â”€ templates over recorded evidence (no LLM)
+                  â”‚
+         REPORT Â· AUDIT Â· PROVENANCE
 ```
 
 ### What is deterministic and what is AI/ML
@@ -192,7 +194,7 @@ verification, boundary/pixel-seam continuity, entropy and byte-distribution simi
 proximity, content similarity, timestamp consistency). It was trained on 14 generated images and
 tested on 5 held-out images (disjoint from the demo images), with **test AUC 0.999, precision 0.81,
 recall 1.00**. Hand-set prior weights reach AUC 0.93 and 6% accuracy. The model card is shown in
-the UI. For forensic precision, a JPEG join is accepted only at ≥ 70%. Joins scoring 50–70% are
+the UI. For forensic precision, a JPEG join is accepted only at â‰¥ 70%. Joins scoring 50â€“70% are
 surfaced as "further recovery: YES" leads for an analyst.
 
 ---
@@ -203,17 +205,17 @@ The input type is detected first (`engine/intake.py`) and shown as the case badg
 
 | Input | Detected by | Mode |
 |---|---|---|
-| **UPLOADED FILE – PDF/JPEG/DOCX/…** | file signature at offset 0, no partition table or file-system structures | *file validation/repair*: no carving; the file is one contiguous candidate |
-| **UPLOADED FILE – TEXT/log** | ≥ 85% printable bytes, no binary file signature, not a disk image | *file validation/repair*: no carving; validated as UTF-8/line-structured text |
+| **UPLOADED FILE â€“ PDF/JPEG/DOCX/â€¦** | file signature at offset 0, no partition table or file-system structures | *file validation/repair*: no carving; the file is one contiguous candidate |
+| **UPLOADED FILE â€“ TEXT/log** | â‰¥ 85% printable bytes, no binary file signature, not a disk image | *file validation/repair*: no carving; validated as UTF-8/line-structured text |
 | **DISK IMAGE** | MBR/GPT partition table, FAT/NTFS/exFAT boot sector, ext superblock, ISO-9660 | carving + reconstruction |
-| **DISK IMAGE – E01** | EWF signature | reported as unsupported (convert with `ewfexport`) |
+| **DISK IMAGE â€“ E01** | EWF signature | reported as unsupported (convert with `ewfexport`) |
 | **RAW STORAGE IMAGE** | none of the above | carving + reconstruction |
 
 **Real bug found and fixed via live testing** (deleting a genuine `.txt` file to a real Windows
 Recycle Bin, then recovering it through Real Recovery Mode): plain text, logs, CSV, JSON,
 source code and similar formats have no magic-byte signature at all, so `detect()` used to fall
-through straight to `RAW STORAGE IMAGE` → carving, which scans for the ~7 known binary signatures,
-finds none, and reports **zero candidate files** — a genuinely recovered real file would silently
+through straight to `RAW STORAGE IMAGE` â†’ carving, which scans for the ~7 known binary signatures,
+finds none, and reports **zero candidate files** â€” a genuinely recovered real file would silently
 vanish, with no entry anywhere in the UI and no error. Fixed by adding a printable-byte-ratio
 fallback (`intake.py: TEXT_PRINTABLE_THRESHOLD = 0.85`) that classifies such content as a normal
 single text/log file instead, so it goes through the same validation (`validators.py: validate_text`)
@@ -232,7 +234,7 @@ Nine checks, each recorded as pass/partial/fail/n-a with its evidence:
 | `%%EOF` marker | 5 |
 | `startxref` points to an xref table or stream | 5 |
 | xref offsets land on real `N G obj` boundaries (surviving entry lines are salvaged if the xref header is overwritten) | 15 |
-| trailer `/Root` → intact `/Catalog`, `/Size` ≥ max object + 1 | 10 |
+| trailer `/Root` â†’ intact `/Catalog`, `/Size` â‰¥ max object + 1 | 10 |
 | page tree resolves, page count > 0 (catalog located by scanning if the trailer is lost) | 15 |
 | **Links**: every indirect reference `N G R` resolves to an intact object | 15 |
 | streams: `/Length` matches and FlateDecode decompresses | 10 |
@@ -243,13 +245,13 @@ Nine checks, each recorded as pass/partial/fail/n-a with its evidence:
 | Status | Condition |
 |---|---|
 | FULLY_RECOVERED | all checks pass and every page renders |
-| MOSTLY_RECOVERED | structure valid, all pages render, ≥ 90% of references resolve |
+| MOSTLY_RECOVERED | structure valid, all pages render, â‰¥ 90% of references resolve |
 | PARTIALLY_RECOVERED | some pages render |
 | FRAGMENT_ONLY | intact objects survive but no page renders |
 | UNRECOVERABLE | no intact objects |
 
 Every candidate carries a `status_reason` naming the deciding checks, for example:
-*"Fragment only: 4/5 objects intact but no page renders; startxref does not lead to a readable xref; xref offsets invalid for 3/7 objects; …; 2/8 checks pass"*.
+*"Fragment only: 4/5 objects intact but no page renders; startxref does not lead to a readable xref; xref offsets invalid for 3/7 objects; â€¦; 2/8 checks pass"*.
 
 **Repair**: when the xref or trailer is broken, a *repaired copy* (`name__recNNNN.repaired.pdf`) is written next to the untouched carved copy.
 * The xref is rebuilt by scanning intact objects, and object bodies are copied byte-for-byte.
@@ -257,9 +259,9 @@ Every candidate carries a `status_reason` naming the deciding checks, for exampl
 * Both SHA-256 values go to the audit trail. The evidence is never modified.
 
 ### No unexplained blanks
-* `recon_confidence_reason`: for example "Contiguous: single-file input, all N bytes present…".
+* `recon_confidence_reason`: for example "Contiguous: single-file input, all N bytes presentâ€¦".
 * `links_metric` states what Links means for the file: internal references, fragment relationships, or N/A with a reason.
-* `coverage_reason`: for example "N/A – no file-system metadata (single-file input)", with a bytes-assigned fallback.
+* `coverage_reason`: for example "N/A â€“ no file-system metadata (single-file input)", with a bytes-assigned fallback.
 
 Recovered files are named `<original or embedded name>__rec<NNNN>.<ext>`. The source of the name is the directory entry, the uploaded file name, the PDF `/Title` or DOCX title, or EXIF.
 
@@ -276,39 +278,39 @@ Report schema **1.1** adds `input_type`, `validator_checks[]`, `status_reason`, 
 All four scores are separate. The UI shows every factor.
 
 **Reconstruction %** = located bytes / expected size, where expected size comes from the file's
-own structure: `startxref` + trailer (PDF), EOCD position (ZIP), `page_count × page_size`
+own structure: `startxref` + trailer (PDF), EOCD position (ZIP), `page_count Ã— page_size`
 (SQLite), MCU-row accounting from restart markers (JPEG), or the size of a linked directory
 entry. It is `n/a` when no size reference exists (logs, plain text).
 
-**Integrity (0–100)** is the sum of:
+**Integrity (0â€“100)** is the sum of:
 
 | Factor | Points |
 |---|---|
 | Header / signature valid | 10 |
 | Terminator / trailer (EOI, %%EOF, EOCD, page count) | 8 (4 if partial or undefined) |
 | Parser validation (pass / partial / fail) | 25 / 12 / 0 |
-| Checksum / index consistency: CRC-32 ratio, xref offset agreement, valid b-tree pages, unbroken RST sequence | 15 × ratio (5 if the format has none) |
-| Expected content present | 30 × reconstruction % |
-| Continuity | 12 × max(0, 1 − 0.25 × missing ranges) |
-| Corrupted ranges | −4 each (max −20) |
-| Conflicting fragments | −5 each (max −10) |
-| Orphan (no header) | −10 |
+| Checksum / index consistency: CRC-32 ratio, xref offset agreement, valid b-tree pages, unbroken RST sequence | 15 Ã— ratio (5 if the format has none) |
+| Expected content present | 30 Ã— reconstruction % |
+| Continuity | 12 Ã— max(0, 1 âˆ’ 0.25 Ã— missing ranges) |
+| Corrupted ranges | âˆ’4 each (max âˆ’20) |
+| Conflicting fragments | âˆ’5 each (max âˆ’10) |
+| Orphan (no header) | âˆ’10 |
 
 **Relationship confidence** is the geometric mean of the accepted fragment-link probabilities,
-× (1 − 0.1 × conflicts). It is shown alongside signature compatibility, sequence compatibility,
+Ã— (1 âˆ’ 0.1 Ã— conflicts). It is shown alongside signature compatibility, sequence compatibility,
 structural/index verification, boundary continuity, metadata correlation and conflicting evidence.
 
 **Content confidence** = signature (45) + parser result (40 / 25 / 5) + agreement with the
 directory-entry extension (15).
 
-**Status**: FULLY (≥ 99.5%, parser pass, no corruption) · MOSTLY (≥ 85% and integrity ≥ 70) ·
-PARTIALLY (≥ 40%, or a DOCX whose document text is CRC-verified) · FRAGMENT_ONLY · UNCERTAIN
-(link confidence < 60% or completeness not measurable) · UNRECOVERABLE (< 20% or headerless
+**Status**: FULLY (â‰¥ 99.5%, parser pass, no corruption) Â· MOSTLY (â‰¥ 85% and integrity â‰¥ 70) Â·
+PARTIALLY (â‰¥ 40%, or a DOCX whose document text is CRC-verified) Â· FRAGMENT_ONLY Â· UNCERTAIN
+(link confidence < 60% or completeness not measurable) Â· UNRECOVERABLE (< 20% or headerless
 and undecodable).
 
-**Priority** = Σ weight × {integrity, reconstruction, link confidence, relevance}, normalised.
+**Priority** = Î£ weight Ã— {integrity, reconstruction, link confidence, relevance}, normalised.
 Relevance is keyword hits (25 each, max 50) + type preference (20) + recency (15) + related
-artifacts (5 each, max 15). The bands are CRITICAL ≥ 88, HIGH ≥ 72, MEDIUM ≥ 52, LOW ≥ 35.
+artifacts (5 each, max 15). The bands are CRITICAL â‰¥ 88, HIGH â‰¥ 72, MEDIUM â‰¥ 52, LOW â‰¥ 35.
 *Priority means "review earlier under these criteria", not "proven important".*
 
 ---
@@ -333,12 +335,12 @@ Every candidate is validated before export and is put in one of three export cla
 
 | Class | When | Label / button |
 |---|---|---|
-| `validated_file` | every format check passes | VALIDATED RECOVERED FILE · "Export reconstructed file" |
+| `validated_file` | every format check passes | VALIDATED RECOVERED FILE Â· "Export reconstructed file" |
 | `partially_validated_file` | the file opens, but some checks fail | PARTIALLY VALIDATED + warning text |
-| `forensic_artifact` | format validation fails, or bytes are missing | FORENSIC BYTE ARTIFACT – NOT A VERIFIED RECOVERED FILE · "Export forensic byte artifact" |
+| `forensic_artifact` | format validation fails, or bytes are missing | FORENSIC BYTE ARTIFACT â€“ NOT A VERIFIED RECOVERED FILE Â· "Export forensic byte artifact" |
 
 * Bytes are written in binary mode, read back and re-hashed. The audit trail records
-  `reconstruction SHA-256 … ; export file SHA-256 … ; BYTE-IDENTICAL`.
+  `reconstruction SHA-256 â€¦ ; export file SHA-256 â€¦ ; BYTE-IDENTICAL`.
 * Missing ranges are never silently zero-filled and called recovered. Artifacts with
   placeholders are named `name.FORENSIC-ARTIFACT.ext` and come with a manifest of the
   placeholder ranges. An "observed segments only (ZIP)" export contains only bytes that were
@@ -379,12 +381,12 @@ Every candidate is validated before export and is put in one of three export cla
 start `clamd` (port 3310) or put `clamscan.exe` on PATH. Restart the API; the scanner is
 detected automatically.
 
-**Security demo datasets** (New analysis → Security demos). All three are harmless:
+**Security demo datasets** (New analysis â†’ Security demos). All three are harmless:
 
-* **SEC1**: clean PDF + JPEG → CLEAN.
+* **SEC1**: clean PDF + JPEG â†’ CLEAN.
 * **SEC2**: PDF with an auto-run `/JavaScript` OpenAction, plus an inert PE-header stub that
-  contains no executable code → SUSPICIOUS.
-* **SEC3**: a text file containing a RecoveryLens test signature → **SIMULATED / TEST MALWARE
+  contains no executable code â†’ SUSPICIOUS.
+* **SEC3**: a text file containing a RecoveryLens test signature â†’ **SIMULATED / TEST MALWARE
   DETECTION**.
 
 The test signature stands in for EICAR because Windows Defender quarantines EICAR files the
@@ -402,16 +404,16 @@ without re-analysis, because every service computes on demand.
 
 | # | Feature | UI | What it does (and what it refuses to do) |
 |---|---|---|---|
-| 1 | **Recovery Digital Twin** (`twin.py`) | Reconstruction → Recovery Digital Twin | React Flow graph: storage image → fragments (offsets, hashes) → ordering incl. MISSING/CORRUPTED ranges → reconstruction → validation → security → artifact. Every placement has an explanation assembled from recorded edge evidence. Replay animation and audit timeline. |
-| 2 | **Recovery Possibility Map** (`possibility.py`) | Reconstruction → Recovery Possibility | HIGH / MEDIUM / LOW / UNKNOWN from explicit rules. HIGH needs a structural match (e.g. the exact PDF objects the xref expects), not a score. For each region: expected content, known evidence, candidates and conflicts. Includes a storage heatmap (green, yellow, orange, red, gray). |
-| 3 | **Fragment DNA** (`fragment_dna.py`) | Analysis → Fragment DNA | Per-fragment fingerprint: SHA-256, entropy and entropy profile, byte histogram, signature/MIME, header/footer, structural markers, compression/encoding, alignment, parser compatibility, metadata, anomalies. Similarity engine (cosine + PCA map) labelled STRONG / POSSIBLE / WEAK / NONE, with evidence. Near-uniform (compressed/encrypted) pairs are capped at WEAK, and similarity never implies same-file. |
-| 4 | **Counterfactual Recovery Simulator** (`simulator.py`) | Recovery Possibility → region → Simulate | Splices a candidate into a temporary copy and re-runs the same validators on baseline and simulation, then shows the before/after difference. The integrity change is split into byte coverage and validator evidence, and only validator evidence can make a verdict "IMPROVES". Otherwise the verdict is REJECTED or FILL UNCONFIRMED. Labelled SIMULATION — NOT EVIDENCE; nothing is saved. Tests include a positive control (the true fragment is confirmed) and a negative control. |
-| 5 | **Cross-Artifact Intelligence** (`cross_artifact.py`, NetworkX) | Intelligence → Cross-Artifact | Relationships between artifacts, detected from: hash duplicates, container membership (hash of DOCX media vs. JPEGs), referenced filenames, shared identifiers, shared metadata, directory metadata, timestamps, similar (non-generated) names, database values, content similarity and storage adjacency. Each has type, evidence, confidence, source and target, and is labelled INFERRED. Filterable graph. |
-| 6 | **Recovery Safety Guardian** (`guardian.py` + `engine/security.py`) | Intelligence → Security Guardian | Status wording: NO DETECTION ("NO MALWARE DETECTED BY AVAILABLE SCANNERS" plus the absence caveat), SUSPICIOUS, MALWARE DETECTED or SCAN UNAVAILABLE. Each detection shows name, scanner, rule, evidence, file region, timestamp and scanner status. Checks for polyglots, dangerous types and embedded OLE objects. Flagged artifacts are copied to `cases/<id>/isolation/*.QUARANTINED` (read-only). Includes a "Run security scan" re-scan. |
-| 7 | **Confidence Calibration Engine** (`confidence.py`) | File detail → Confidence profile; top bar → Calibration | Six separate measures, each with its evidence: detection, relationship, reconstruction, classification, integrity and possibility. Calibration uses only ground-truth-labelled samples (one case per demo dataset plus Benchmark Lab runs): reliability bins, Brier, ECE, precision/recall, confusion matrix. With fewer than 30 labels it shows "CONFIDENCE CALIBRATION UNAVAILABLE — INSUFFICIENT VALIDATION DATA". |
-| 8 | **Universal File Structure Explorer** (`structure.py`) | Reconstruction → Structure Explorer | Plugin parsers (`@structure_parser`) for PDF, JPEG, ZIP/DOCX/XLSX, SQLite, MP4 and PNG. Each component shows offset, length, parser verdict, recovered/missing/corrupted state, source fragment and confidence. Other formats show "STRUCTURE PARSER UNAVAILABLE". |
-| 9 | **Recovery Benchmark Lab** (`benchmark.py`) | top bar → Benchmark Lab | Nine damage scenarios on clean ground-truth files: deleted ranges, random corruption, fragmentation, missing header, missing footer, reordered fragments, partial truncation, mixed fragments and duplicates. Runs the unmodified engine and measures byte recovery, linking P/R (junction level), classification, reconstruction and integrity-prediction accuracy, and FPR/FNR. Labelled SYNTHETIC TEST DATA. |
-| 10 | **AI Recovery Investigator** (`investigator.py`) | Intelligence → AI Investigator | An evidence planner over structured backend records. Each suggestion states ACTION, REASON, EVIDENCE, EXPECTED BENEFIT, RISK and CONFIDENCE, with APPROVE / REJECT / VIEW EVIDENCE buttons. Actions are read-only or simulations. Every decision is logged (audit trail and decision log). An optional LLM narrative runs only with `ANTHROPIC_API_KEY`; otherwise the page says "LLM NOT CONFIGURED" and no narrative is simulated. |
+| 1 | **Recovery Digital Twin** (`twin.py`) | Reconstruction â†’ Recovery Digital Twin | React Flow graph: storage image â†’ fragments (offsets, hashes) â†’ ordering incl. MISSING/CORRUPTED ranges â†’ reconstruction â†’ validation â†’ security â†’ artifact. Every placement has an explanation assembled from recorded edge evidence. Replay animation and audit timeline. |
+| 2 | **Recovery Possibility Map** (`possibility.py`) | Reconstruction â†’ Recovery Possibility | HIGH / MEDIUM / LOW / UNKNOWN from explicit rules. HIGH needs a structural match (e.g. the exact PDF objects the xref expects), not a score. For each region: expected content, known evidence, candidates and conflicts. Includes a storage heatmap (green, yellow, orange, red, gray). |
+| 3 | **Fragment DNA** (`fragment_dna.py`) | Analysis â†’ Fragment DNA | Per-fragment fingerprint: SHA-256, entropy and entropy profile, byte histogram, signature/MIME, header/footer, structural markers, compression/encoding, alignment, parser compatibility, metadata, anomalies. Similarity engine (cosine + PCA map) labelled STRONG / POSSIBLE / WEAK / NONE, with evidence. Near-uniform (compressed/encrypted) pairs are capped at WEAK, and similarity never implies same-file. |
+| 4 | **Counterfactual Recovery Simulator** (`simulator.py`) | Recovery Possibility â†’ region â†’ Simulate | Splices a candidate into a temporary copy and re-runs the same validators on baseline and simulation, then shows the before/after difference. The integrity change is split into byte coverage and validator evidence, and only validator evidence can make a verdict "IMPROVES". Otherwise the verdict is REJECTED or FILL UNCONFIRMED. Labelled SIMULATION â€” NOT EVIDENCE; nothing is saved. Tests include a positive control (the true fragment is confirmed) and a negative control. |
+| 5 | **Cross-Artifact Intelligence** (`cross_artifact.py`, NetworkX) | Intelligence â†’ Cross-Artifact | Relationships between artifacts, detected from: hash duplicates, container membership (hash of DOCX media vs. JPEGs), referenced filenames, shared identifiers, shared metadata, directory metadata, timestamps, similar (non-generated) names, database values, content similarity and storage adjacency. Each has type, evidence, confidence, source and target, and is labelled INFERRED. Filterable graph. |
+| 6 | **Recovery Safety Guardian** (`guardian.py` + `engine/security.py`) | Intelligence â†’ Security Guardian | Status wording: NO DETECTION ("NO MALWARE DETECTED BY AVAILABLE SCANNERS" plus the absence caveat), SUSPICIOUS, MALWARE DETECTED or SCAN UNAVAILABLE. Each detection shows name, scanner, rule, evidence, file region, timestamp and scanner status. Checks for polyglots, dangerous types and embedded OLE objects. Flagged artifacts are copied to `cases/<id>/isolation/*.QUARANTINED` (read-only). Includes a "Run security scan" re-scan. |
+| 7 | **Confidence Calibration Engine** (`confidence.py`) | File detail â†’ Confidence profile; top bar â†’ Calibration | Six separate measures, each with its evidence: detection, relationship, reconstruction, classification, integrity and possibility. Calibration uses only ground-truth-labelled samples (one case per demo dataset plus Benchmark Lab runs): reliability bins, Brier, ECE, precision/recall, confusion matrix. With fewer than 30 labels it shows "CONFIDENCE CALIBRATION UNAVAILABLE â€” INSUFFICIENT VALIDATION DATA". |
+| 8 | **Universal File Structure Explorer** (`structure.py`) | Reconstruction â†’ Structure Explorer | Plugin parsers (`@structure_parser`) for PDF, JPEG, ZIP/DOCX/XLSX, SQLite, MP4 and PNG. Each component shows offset, length, parser verdict, recovered/missing/corrupted state, source fragment and confidence. Other formats show "STRUCTURE PARSER UNAVAILABLE". |
+| 9 | **Recovery Benchmark Lab** (`benchmark.py`) | top bar â†’ Benchmark Lab | Nine damage scenarios on clean ground-truth files: deleted ranges, random corruption, fragmentation, missing header, missing footer, reordered fragments, partial truncation, mixed fragments and duplicates. Runs the unmodified engine and measures byte recovery, linking P/R (junction level), classification, reconstruction and integrity-prediction accuracy, and FPR/FNR. Labelled SYNTHETIC TEST DATA. |
+| 10 | **AI Recovery Investigator** (`investigator.py`) | Intelligence â†’ AI Investigator | An evidence planner over structured backend records. Each suggestion states ACTION, REASON, EVIDENCE, EXPECTED BENEFIT, RISK and CONFIDENCE, with APPROVE / REJECT / VIEW EVIDENCE buttons. Actions are read-only or simulations. Every decision is logged (audit trail and decision log). An optional LLM narrative runs only with `ANTHROPIC_API_KEY`; otherwise the page says "LLM NOT CONFIGURED" and no narrative is simulated. |
 
 **Pipeline additions:**
 
@@ -446,7 +448,7 @@ without re-analysis, because every service computes on demand.
 Continuous protection for a **live local folder**, complementary to the forensic engine above (which
 reconstructs files from a *static, already-damaged* storage image). Shield instead watches an
 ordinary folder over time and answers: *what changed since it was last protected, and can it be put
-back?* Menu: top bar → **Recovery Shield**.
+back?* Menu: top bar â†’ **Recovery Shield**.
 
 * **Protect a folder** (`POST /api/shield/sources`): registers a local path. The path is only ever
   opened read-only; nothing in it is written except an explicit, confirmed restore.
@@ -456,7 +458,7 @@ back?* Menu: top bar → **Recovery Shield**.
   their manifest to prove the protected copy itself is intact.
 * **Change detection** (`POST /api/shield/sources/{id}/scan`, or continuous monitoring) compares the
   folder against the latest recovery point: **deleted**, **modified**, **new**, **renamed**
-  (matched by identical hash+size), and **corrupted** — corruption is only claimed when the file's
+  (matched by identical hash+size), and **corrupted** â€” corruption is only claimed when the file's
   real structural validator (the *same* PDF/JPEG/ZIP/DOCX/SQLite validators the recovery engine
   uses, via `intake.detect` + `engine.validators.validate`) rejects the current content; otherwise a
   changed file is reported as plain "modified", never guessed at.
@@ -464,12 +466,12 @@ back?* Menu: top bar → **Recovery Shield**.
   (`watchdog`, debounced ~1.5 s) with a 5 s fallback poll if the platform's event backend is
   unavailable, so a live deletion is detected without the user clicking anything.
 * **Incidents** are raised only for *newly observed* loss (a still-deleted file is never re-alerted
-  on every poll), severity HIGH/MEDIUM/LOW by an explicit rule (§ `_raise_incident`), and the wording
-  is deliberately "suspicious activity detected; possible unauthorized deletion" — never "hacker
+  on every poll), severity HIGH/MEDIUM/LOW by an explicit rule (Â§ `_raise_incident`), and the wording
+  is deliberately "suspicious activity detected; possible unauthorized deletion" â€” never "hacker
   detected".
 * **Restore** (`POST /api/shield/sources/{id}/restore`) copies selected files from a recovery point
-  to a destination: a safe timestamped folder (default), a user-given folder, or — only with an
-  extra confirmation tick in the UI — the original location. Every restored byte is re-hashed and
+  to a destination: a safe timestamped folder (default), a user-given folder, or â€” only with an
+  extra confirmation tick in the UI â€” the original location. Every restored byte is re-hashed and
   reported BYTE-IDENTICAL or MISMATCH. A file with no recovery-point copy is reported
   NOT_RECOVERABLE via Shield (it may still be recoverable from a disk image through the forensic
   engine above, but that is a separate, explicit step, never automatic).
@@ -487,7 +489,7 @@ of them change what the running prototype can actually do in a demo.
 ## Real Recovery Mode (`backend/app/recyclebin.py`, `app/realrecovery.py`, `app/api_realrecovery.py`)
 
 A second, clearly separated mode on **New analysis**, next to Demo Mode. It never touches demo
-data or synthetic images — every number it shows (scanned bytes, fragment counts, recovery
+data or synthetic images â€” every number it shows (scanned bytes, fragment counts, recovery
 percentage) comes from the exact evidence the user provided, and it reuses the **same**
 single-file analysis path (`engine/analyze.py`) that an uploaded corrupted file already goes
 through, so every existing page (Fragments, Fragment DNA, Digital Twin, Relationship Graph,
@@ -497,45 +499,45 @@ recovery engine.
 
 **Recycle Bin evidence** (`GET /api/real/drives`, `POST /api/real/recyclebin/scan`): reads the
 real `$I<suffix>` / `$R<suffix>` records Windows writes under `<drive>:\$Recycle.Bin\<SID>\`
-when a file is deleted to the Recycle Bin — genuine forensic technique, the same one
+when a file is deleted to the Recycle Bin â€” genuine forensic technique, the same one
 Recuva-class tools use, not a simulation. `$I` is a small index record (original name, path,
 size, deletion time); `$R` is the original file's untouched bytes, present until the Recycle Bin
 is emptied. Everything is opened `"rb"` only; nothing is ever written back.
 
 * Each scanned item is shown as either **"Recycle Bin Evidence Found"** (the `$R` data is still
-  present — file, original path, size and deletion time are shown, with a **Recover & analyse**
+  present â€” file, original path, size and deletion time are shown, with a **Recover & analyse**
   button) or **"Data purged"** (the Recycle Bin has already been emptied for that item).
 * **Recover & analyse** copies the `$R` bytes byte-for-byte into a temp file and calls the same
   `pipeline.create_case(..., mode="recyclebin", ...)` an upload uses. The resulting case is
-  validated, scored and classified exactly like any other single-file input — a genuinely valid
+  validated, scored and classified exactly like any other single-file input â€” a genuinely valid
   recovered PDF is marked FULLY_RECOVERED; a truncated or non-file byte sequence is honestly
   marked UNRECOVERABLE or PARTIALLY_RECOVERED. Nothing is invented to make a result look better.
 * Real bug found and fixed via live testing on an actual Windows Recycle Bin: the version-2 `$I`
-  record's character count includes the trailing NUL terminator, which — unlike the version-1
-  branch — was not being stripped, leaving an embedded `\x00` in `original_name` that crashed
+  record's character count includes the trailing NUL terminator, which â€” unlike the version-1
+  branch â€” was not being stripped, leaving an embedded `\x00` in `original_name` that crashed
   `os.open()` as soon as it was used to build the evidence-store path. Covered by
   `test_version2_index_with_null_terminator_counted_strips_it` in `tests/test_realrecovery.py`.
 
-**"Data purged" → Recover & Analyse** (`realrecovery.carve_purged_item`, `POST
+**"Data purged" â†’ Recover & Analyse** (`realrecovery.carve_purged_item`, `POST
 /api/real/recyclebin/scans/{sid}/items/{item_id}/carve`): once the Recycle Bin has actually been
-emptied, `$R` is gone — there are no bytes left to copy byte-for-byte, so this is deliberately a
+emptied, `$R` is gone â€” there are no bytes left to copy byte-for-byte, so this is deliberately a
 *different, weaker* recovery path, not the same one relabelled. Clicking **Recover & Analyse** on
 a purged row opens a picker of already-analysed, non-demo disk-image cases (`GET
-/api/real/recyclebin/carve-images`) — real evidence only; a synthetic demo case can never be
+/api/real/recyclebin/carve-images`) â€” real evidence only; a synthetic demo case can never be
 selected. "Search evidence" then looks in that image's own already-computed candidate files
 (no new engine, no re-scanning) for one of the same file type (inferred from the deleted item's
 extension) with a plausible size:
 * same type + within 50% of the declared size + the engine already validated it FULLY/MOSTLY
-  RECOVERED → **Recovered**
-* same type + a validated-but-imperfect or size-uncertain candidate → **Partially Recoverable**
+  RECOVERED â†’ **Recovered**
+* same type + a validated-but-imperfect or size-uncertain candidate â†’ **Partially Recoverable**
 * no candidate of that type anywhere in the image, or the closest one is too different in size or
-  too damaged to mean anything → **Insufficient Evidence** — and nothing else is offered
+  too damaged to mean anything â†’ **Insufficient Evidence** â€” and nothing else is offered
 Carving can never recover the original filename (that only ever lived in the now-purged `$I`
 record), so a match is always reported as *best-effort by type and size*, explicitly worded as
 "identity is not proven", never as confirmed recovery of that specific file. Recovered/Partially
 Recoverable results get Preview / Download / Restore, wired to the existing per-case endpoints
 (download re-hashes and proves BYTE-IDENTICAL; Restore opens the file's own export section, which
-already has the full restore-to-folder flow — no logic is duplicated). Verified live: a genuine
+already has the full restore-to-folder flow â€” no logic is duplicated). Verified live: a genuine
 FAT12 image containing a real JPEG was uploaded as ordinary evidence; searching it for the actual
 `IMG_20241007_053840.jpg` entry purged from this machine's real Recycle Bin correctly matched and
 downloaded byte-identically (SHA-256 confirmed), while searching the same image for a purged
@@ -544,13 +546,13 @@ Covered by `CarvePurgedItemTests` (7 tests) in `tests/test_realrecovery.py`.
 
 **Upload a storage image** (existing `POST /api/cases/upload`, relabelled "Upload a storage
 image" in Real Recovery Mode): `.img`/`.dd`/`.raw`/`.bin`, or a single corrupted file. This was
-already fully real — `mode="upload"` never touched demo data — so no backend change was needed
+already fully real â€” `mode="upload"` never touched demo data â€” so no backend change was needed
 here; only the UI now shows filename, size, a **client-side SHA-256** (computed with WebCrypto
 before upload, `sha256Hex` in `lib/format.ts`), an evidence ID and read-only status before
 analysis starts.
 
 **Restore to folder** (`POST /api/cases/{cid}/files/{fid}/restore`, `realrecovery.restore_file`):
-generic — works for a real-recovery case exactly like it would for a demo or upload case. Copies
+generic â€” works for a real-recovery case exactly like it would for a demo or upload case. Copies
 the file's already-produced export bytes (never the original evidence) to
 `~/RecoveryLens_Recovered/<case name>/` by default, or a user-chosen folder; re-hashes the copy
 and reports BYTE-IDENTICAL or HASH MISMATCH; requires `authorized=true`; never overwrites the
@@ -558,8 +560,8 @@ file's original real-world location. Recorded in the case's audit trail. Exposed
 folder" button in `ExportPanel.tsx`, next to the existing Verify/Export buttons.
 
 **Browser limitation, acknowledged rather than worked around**: browser JavaScript cannot read
-raw disk sectors. `scripts/acquire_drive.py` is an optional, native, elevated-only helper — run
-by the user from an Administrator terminal — that opens `\\.\<DRIVE>:` read-only, streams it to a
+raw disk sectors. `scripts/acquire_drive.py` is an optional, native, elevated-only helper â€” run
+by the user from an Administrator terminal â€” that opens `\\.\<DRIVE>:` read-only, streams it to a
 plain `.img` file with a live SHA-256, and refuses the OS boot drive by default (real forensic
 practice acquires a boot volume offline, not from inside itself). The resulting `.img` is an
 ordinary file uploaded through the existing "Upload a storage image" path; no code treats it
@@ -604,30 +606,30 @@ unchanged afterwards.
 | POST | `/api/cases/{id}/files/{fid}/export-verification` | record the client-side re-hash in the audit trail |
 | GET | `/api/cases/{id}/fragments?page&family&assigned&q` | paginated fragment explorer |
 | GET | `/api/cases/{id}/fragments/{frag}/hex` | read-only hex view |
-| GET | `/api/cases/{id}/graph` · `/diskmap` | relationship graph · cluster map |
+| GET | `/api/cases/{id}/graph` Â· `/diskmap` | relationship graph Â· cluster map |
 | GET/PUT | `/api/cases/{id}/criteria` | read or change priority criteria (re-ranks) |
 | GET | `/api/cases/{id}/report?download=` | JSON report |
 | GET | `/api/model` | edge-model card |
-| GET | `/api/cases/{id}/dna?page&family&q` · `/dna/map` · `/dna/{frag}` | Fragment DNA cards · PCA map · card + similarity |
-| GET | `/api/cases/{id}/twin` · `/files/{fid}/twin` | Recovery Digital Twin |
+| GET | `/api/cases/{id}/dna?page&family&q` Â· `/dna/map` Â· `/dna/{frag}` | Fragment DNA cards Â· PCA map Â· card + similarity |
+| GET | `/api/cases/{id}/twin` Â· `/files/{fid}/twin` | Recovery Digital Twin |
 | GET | `/api/cases/{id}/files/{fid}/structure` | Universal File Structure Explorer |
-| GET | `/api/cases/{id}/possibility` · `/files/{fid}/possibility` | Recovery Possibility Map + heatmap |
+| GET | `/api/cases/{id}/possibility` Â· `/files/{fid}/possibility` | Recovery Possibility Map + heatmap |
 | POST | `/api/cases/{id}/files/{fid}/simulate` | counterfactual simulation `{fragment_id, range_index}` |
 | GET | `/api/cases/{id}/cross-artifact` | Cross-Artifact Intelligence |
-| GET · POST | `/api/cases/{id}/guardian` · `/guardian/rescan?file_id=` | Safety Guardian overview · static re-scan |
-| GET | `/api/cases/{id}/files/{fid}/confidence` · `/api/calibration` | confidence profile · calibration |
-| GET · POST | `/api/benchmarks/scenarios` · `/api/benchmarks` · `/api/benchmarks/{bid}` | Benchmark Lab |
-| GET · POST | `/api/cases/{id}/investigator` · `/investigator/plan` · `/investigator/{rid}/decision` · `/investigator/narrative` | AI Investigator |
-| GET | `/api/cases/{id}/files/{fid}/provenance` · `/api/cases/{id}/insights` | provenance chain · dashboard aggregates |
-| GET · POST · DELETE | `/api/shield/sources` · `/sources/{id}` | register/list/remove a protected folder |
-| POST · GET | `/api/shield/sources/{id}/snapshots` · `/snapshots/{sid}` · `/snapshots/{sid}/verify` | recovery points |
-| POST | `/api/shield/sources/{id}/scan` · `/monitor` | on-demand change scan · start/stop continuous monitoring |
-| GET | `/api/shield/incidents` · `/incidents/{id}` · `/sources/{id}/audit` | incidents · per-source audit trail |
-| POST · GET | `/api/shield/sources/{id}/restore` · `/restores` | restore selected files · restore history |
+| GET Â· POST | `/api/cases/{id}/guardian` Â· `/guardian/rescan?file_id=` | Safety Guardian overview Â· static re-scan |
+| GET | `/api/cases/{id}/files/{fid}/confidence` Â· `/api/calibration` | confidence profile Â· calibration |
+| GET Â· POST | `/api/benchmarks/scenarios` Â· `/api/benchmarks` Â· `/api/benchmarks/{bid}` | Benchmark Lab |
+| GET Â· POST | `/api/cases/{id}/investigator` Â· `/investigator/plan` Â· `/investigator/{rid}/decision` Â· `/investigator/narrative` | AI Investigator |
+| GET | `/api/cases/{id}/files/{fid}/provenance` Â· `/api/cases/{id}/insights` | provenance chain Â· dashboard aggregates |
+| GET Â· POST Â· DELETE | `/api/shield/sources` Â· `/sources/{id}` | register/list/remove a protected folder |
+| POST Â· GET | `/api/shield/sources/{id}/snapshots` Â· `/snapshots/{sid}` Â· `/snapshots/{sid}/verify` | recovery points |
+| POST | `/api/shield/sources/{id}/scan` Â· `/monitor` | on-demand change scan Â· start/stop continuous monitoring |
+| GET | `/api/shield/incidents` Â· `/incidents/{id}` Â· `/sources/{id}/audit` | incidents Â· per-source audit trail |
+| POST Â· GET | `/api/shield/sources/{id}/restore` Â· `/restores` | restore selected files Â· restore history |
 | GET | `/api/shield/overview` | Recovery Shield dashboard aggregates |
 | GET | `/api/real/drives` | fixed/removable drives visible to the API process, with Recycle Bin presence |
 | POST | `/api/real/recyclebin/scan` `{drive}` | read-only scan of one drive's `$Recycle.Bin` |
-| GET | `/api/real/recyclebin/scans` · `/scans/{sid}` | scan history · one scan's items |
+| GET | `/api/real/recyclebin/scans` Â· `/scans/{sid}` | scan history Â· one scan's items |
 | POST | `/api/real/recyclebin/scans/{sid}/items/{item_id}/recover` | copy that item's real bytes into a new real-recovery case |
 | GET | `/api/real/recyclebin/carve-images` | completed, non-demo disk-image cases a purged item can be searched against |
 | POST | `/api/real/recyclebin/scans/{sid}/items/{item_id}/carve` `{case_id}` | search that image for a same-type, similar-size candidate for an already-purged item |
@@ -668,7 +670,7 @@ backend/
   scripts/make_corrupted_files.py  corrupted single files (PDF/JPEG/DOCX) + manifest
   scripts/acquire_drive.py      optional, elevated-only: image a real drive to .img for Real Recovery Mode
 frontend/  React + TypeScript + Vite + Tailwind + React Flow + Recharts + Framer Motion
-  src/pages/ShieldHome.tsx, ShieldSource.tsx     Recovery Shield UI (top bar → Recovery Shield)
+  src/pages/ShieldHome.tsx, ShieldSource.tsx     Recovery Shield UI (top bar â†’ Recovery Shield)
   src/pages/NewAnalysis.tsx     Real Recovery Mode (Recycle Bin scan + storage-image upload) / Demo Mode
   src/api-real.ts               Real Recovery Mode API client
 ```
@@ -695,3 +697,4 @@ frontend/  React + TypeScript + Vite + Tailwind + React Flow + Recharts + Framer
 **Next steps**: filesystem parsers (FAT/NTFS/ext4 allocation tables), more validators (MP4
 reconstruction, PNG/GIF assembly), learned per-format models, a job queue and PostgreSQL,
 and analyst feedback loops that write confirmed or rejected links back into training data.
+
